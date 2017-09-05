@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- <link rel="stylesheet" th:href="@{C:/JavaWorkspace/accessportal.zip_expanded/accessportal/src/main/resources/static/css/main.css}" /> -->
+
+<title>Access Request Status</title>
+</head>
+<body>
+<!-- <img src="/static/images/unilever_logo.png"></img>
+<hr style = "height:2px;"></hr> -->
+<p style="font-size: 15px;font-weight:bold;">Hello,</p>
+<p style="font-size: 15px;font-weight:bold;">Thank you for submitting access request.</p>
+<p style="font-size: 15px;">
+Your request has been processed. </p>
+<p style="font-size: 15px;">Please find the status of your access request below.</p>
+<hr></hr>
+	 <div class="container-fluid">
+		<div class="container custom-container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#"></a>
+			</div>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="panel panel-default custom-default">
+					<div class="container">
+						<div class="table-responsive">
+							<div class="navbar-header">
+								
+							</div>
+							<table class="table ">
+								<tbody>
+									<tr>
+										<td style="font-size: 15px;font-weight:bold;padding-left:5px;padding-right:40px;">Request ID</td>
+										<td style="font-size: 14px;color:#428bca;" th:text="(${user.id==null})? '' : ${user.id}"></td>
+									</tr>
+									<tr>
+										<td style="font-size: 15px;font-weight:bold;padding-left:5px;padding-right:40px;">Status</td>
+										<td style="font-size: 14px;color:#428bca;" th:text="(${user.status==null})? '' : ${user.status}"></td>
+									</tr>
+									
+									<tr>
+									</tr>
+								</tbody>
+							</table>
+								
+							
+							<p>   </p>
+							<hr></hr>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+							
+	<p>   </p>
+<p style="font-size: 16px;font-weight:bold;">Thanks,</p>
+<p style="font-size: 16px;font-weight:bold;">Unilever.</p>
+<p>   </p>
+<p><i> This is an automated email please do not reply to this message. This message is for the designated recipient only and may contain privileged, proprietary, or otherwise private information.
+						 If you have received it in error, please delete. Any other use of the information by you is prohibited.</i></p>
+							
+</body>
+</html>
+
+
+

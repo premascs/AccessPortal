@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   <link rel="stylesheet" th:href="@{/css/main.css}" />
+<title>Access Request</title>
+</head>
+<body>
+ <div class="container-fluid">
+    <div class="container custom-container">
+   <div class="navbar-header">
+      <a class="navbar-brand" href="#">Access Request</a>
+    </div>
+    </div>
+    
+<div class="panel panel-default">
+    <div class="panel-body">
+    	<div class="panel panel-default custom-default">
+<div class="container">
+  <div class="table-responsive">          
+  <table class="table ">
+    <thead>
+      <tr>
+        <th>Request ID</th>
+        <th>Access Type</th>
+        <th>User ID</th>
+        <th>Original Approver</th>
+        <th>Change Type</th> 
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>TimeStamp</th>
+        <th>Request</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+<tbody th:each="user : ${accessList}" >
+<!-- <c:forEach items="${accessList}" var="user"> -->
+      <tr>
+<td th:text="(${user.id==null})? '' : ${user.id}"></td>
+<td th:text="(${user.accessType==null})? '' : ${user.accessType}"></td>
+<td th:text="(${user.userId==null})? '': ${user.userId }"></td>
+<td th:text="(${user.orgApprover==null})? '': ${user.orgApprover}"></td>
+<td th:text="(${user.temporary==null})? '' : ${user.temporary}"></td>
+<td th:text="(${user.effStartDate==null})? '' : ${user.effStartDate}"></td>
+<td th:text="(${user.effEndDate==null})? '' : ${user.effEndDate}"></td>
+<td th:text="(${user.datestamp==null})? '' : ${user.datestamp }"></td>
+<td th:text="(${user.accessReqAction==null})? '' : ${user.accessReqAction}"></td>
+      <td><button type="button" class="btn btn-success">Approve</button>
+      <button id="declinebutton" type="button" class="btn btn-danger">Decline</button></td>
+      </tr>      
+      </tbody>
+      </table>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+  
+</body>
+</html>
+
+
+

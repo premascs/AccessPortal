@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Login</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+
+<body>
+
+ <div class="navbar navbar-default">
+ <div class="container-fluid">
+  <div class="header-block"><a th:href="@{/login}"><img th:src="@{/images/ulogo.png}"></img></a></div>	
+ <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+     
+    </div>
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+ <ul class="nav navbar-nav navbar-right">
+        
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
+			<ul id="login-dp" class="dropdown-menu">
+				<li>
+					 <div class="row">
+							<div class="col-md-12">
+								
+								 <form role="form" th:action="@{/login}" method="POST" class="form-signin" accept-charset="UTF-8" id="login-nav">
+										<div class="form-group">
+											 <label class="sr-only" for="exampleInputEmail2">Email</label>
+											 <input type="text" id="email" name="email"
+						th:placeholder="Email" class="form-control" />
+										</div>
+										<div class="form-group">
+											 <label class="sr-only" for="exampleInputPassword2">Password</label>
+											 <input
+						type="password" th:placeholder="Password" id="password"
+						name="password" class="form-control" />
+						
+					</div>
+					<div align="left" th:if="${param.error}">
+						<p style="font-size: 20; color: #FF1C19;">Email or Password
+							invalid</p>
+							</div>
+                                             <div class="help-block text-right"><a th:href="@{/forgot}">Forgot Password ?</a></div> 
+										
+										<div class="form-group">
+											 <button class="btn btn-primary btn-block" name="Submit" value="Login"
+						type="Submit" >Sign in</button>
+										</div>
+										
+								 </form>
+								 
+							</div>
+							
+					 </div>
+				</li>
+			</ul>
+        </li>
+      </ul>
+      
+     	</div>
+     	
+    </div> 
+  
+    </div>
+  
+	<div class="container forgot-container">
+		<div class="row">
+			<div class="panel panel-default">
+			<div class="panel-body">
+				
+			<div class="col-md-8 col-md-offset-2">
+			
+			
+					<h3 class="form-signin-heading" >Forgot Password</h3> 
+					<br /> 
+					
+					<p> Please check your email for reset password link</p><br />
+
+<!-- 
+				<div class="resetSubmit"> 
+					
+					<div class="access"> <a th:href="@{/login}"> Login</a></div>
+					</div>
+					
+					
+					
+					<br /><br />
+				
+			 </div>  -->
+			 </div>
+		</div>
+	
+</div>
+</div>
+	</div>
+<div class="navbar navbar-inverse navbar-fixed-bottom"> 
+<!-- <div class="footer"> -->
+<p class="footer-block">
+  <img src="https://scsanalytics.com/wp-content/uploads/2017/02/250ElevatingSCSAnalytics.png"></img>
+       </p>	
+     	
+    </div>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+<script th:src="@{/js/formValidation.js}"></script>
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"></link>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" th:href="@{/css/main.css}" />
+
+<script>
+	jQuery.noConflict();
+	$(function() {
+		$(".datepicker").datepicker();
+	});
+	
+</script>
+</head>
+<body onLoad="defaultValues()">
+<div class="navbar navbar-default  ">
+ <div class="container-fluid">
+  <div class="header-block"><a th:href="@{/login}"><img th:src="@{/images/small.png}"></img></a></div>	
+ <div class="navbar-header">
+
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+     
+    </div>
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+ <ul class="nav navbar-nav navbar-right">
+        
+        <li class="dropdown">
+        
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color: #2D39DD;font-size: 15px;
+	font-weight: bold; padding-right: 20px;" >Login <span class="caret"></span></a>
+			<ul id="login-dp" class="dropdown-menu">
+				<li>
+					 <div class="row">
+							<div class="col-md-12">
+								
+								 <form role="form" th:action="@{/login}" method="POST" class="form-signin" accept-charset="UTF-8" id="login-nav">
+										<div class="form-group">
+											 <label class="sr-only" for="exampleInputEmail2">Email</label>
+											 <input type="text" id="email" name="email"
+						th:placeholder="Email" class="form-control" />
+										</div>
+										<div class="form-group">
+											 <label class="sr-only" for="exampleInputPassword2">Password</label>
+											 <input
+						type="password" th:placeholder="Password" id="password"
+						name="password" class="form-control" />
+                                             <div class="help-block text-right"><a th:href="@{/forgot}">Forgot Password ?</a></div> 
+										</div>
+										<div class="form-group">
+											 <button class="btn btn-primary btn-block" name="Submit" value="Login"
+						type="Submit" >Sign in</button>
+										</div>
+										
+								 </form>
+							<!-- 	  <form id="reset" name= "resetForm" th:action="@{/forgot}" method="GET"> 
+					 <button class="btn btn-primary btn-block" name="Reset" value="Submit"
+						type="Submit"  > Forgot Password</button>
+					
+					 </form> -->
+								 
+							</div>
+							
+					 </div>
+				</li>
+			</ul>
+        </li>
+      </ul>
+     	</div>
+    </div> 
+  
+    </div>
+	 
+	 
+	 <div class="container-fluid" > 
+	<!-- 	<div class="container custom-container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Access Request</a>
+			</div>
+			<div class="logout"> <a th:href="@{/login}"> Login</a></div>
+		</div> -->
+
+		<!-- <div class="panel panel-default">
+			<div class="panel-body"> -->
+				<div class="panel panel-default custom-default" >
+					<form id="accessForm" name="add" th:object="${accessModel}"
+						method="post"  onsubmit="submitForm()">
+						<div id="first" class="container">
+							<div id="first-one" class="row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-2">
+									<label for="accessType">Access Type</label>
+								</div>
+								<div class="col-sm-4">
+									<select th:field="*{accessType}" class="form-control"
+										id="accessType" th:items="${typeList}"
+										onchange="verify(this.value)">
+							
+										<option th:value="0" th:text="Select"></option>
+										
+										<option th:each="type : ${typeList}" th:value="${type}"
+											th:text="${type}"></option>
+									</select>
+								</div>
+								<div class="col-sm-4"></div>
+
+							</div>
+							<div id="first-two" class="row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-2">
+									<label></label>
+								</div>
+								<div class="col-sm-5" style="color:#428bca;">
+				
+									<input type="radio" th:field="*{accessReqAction}" style="vertical-align: middle;margin:0px;"
+										name="accessAction" id="add"  value="Add"
+										onclick="disableChange()" />Add
+									<input type="radio" th:field="*{accessReqAction}" name="accessAction" id="remove"
+										style="vertical-align: middle;margin:0px;" value="Remove" onclick="disableChange()" />Remove
+									
+									<div id="hideChange">
+										<input type="radio" th:field="*{accessReqAction}"
+											name="accessAction" id="change" style="vertical-align: middle;margin:0px;"
+											value="Change" onclick="enableChange()" />Change
+									</div>
+									
+								</div>
+								<div class="col-sm-4"></div>
+							</div>
+							<div id="first-three" class="row custom-row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-2">
+									<label for="userId">User ID</label>
+								</div>
+								<div class="col-sm-4">
+									<input type="text" th:field="*{userId}" class="form-control"
+										id="userId" name="userId"/>
+								</div>
+								<!-- <div class="col-sm-4 messageContainer"></div> -->
+							</div>
+							<div id="first-four" class="row custom-row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-2">
+									<label for="userEmail">Email</label>
+								</div>
+								<div class="col-sm-4">
+									<input type="text" th:field="*{userEmail}" class="form-control"
+										id="userEmail" name="userEmail"/>
+								</div>
+							<!-- 	<div class="col-sm-4 messageContainer"></div> -->
+							</div>
+							<div id="first-five" class="row custom-row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-2">
+									<label for="domain">Domain</label>
+								</div>
+								<div class="col-sm-4">
+								<select th:field="*{domain}" class="form-control"
+										id="domain" name="domain" >
+										<option th:value="0" th:text="Select"></option>
+										<option th:value="S1" th:text="S1"></option>
+										<option th:value="S2" th:text="S2"></option>
+										<option th:value="S3" th:text="S3"></option>
+								</select>
+								</div>
+								
+							</div>
+							<div id="first-six" class="row custom-row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-2">
+									<label for="comments">Comments</label>
+								</div>
+								<div class="col-sm-3" id="cuscomments">
+									<textarea th:field="*{comments}" class="form-control"
+										id="comments"></textarea>
+								</div>
+								<div class="col-sm-5"></div>
+							</div>
+						</div>
+
+						<div id="second" class="container">
+							<div id="second-one" class="row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-2">
+									<label for="orgApprover">Original Approver</label>
+								</div>
+								<div class="col-sm-4">
+									<input type="text" th:field="*{orgApprover}"
+										class="form-control" id="orgApprover" />
+								</div>
+								<div class="col-sm-4"></div>
+							</div>
+							<div id="second-two" class="row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-2">
+									<label for="temporary">Change Type</label>
+								</div>
+								<div class="col-sm-3">
+									<input type="checkbox" th:field="*{temporary}" id="temporary"
+										value="Temporary" onclick="enableDisable()" />Temporary
+								</div>
+								<div class="col-sm-4" id="sDate">
+									<input type="text" th:field="*{effStartDate}" id="effStartDate"
+										class="datepicker" />
+								</div>
+							</div>
+							<div id="second-three" class="row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-5"></div>
+
+								<div class="col-sm-4" id="eDate">
+									<input type="text" th:field="*{effEndDate}" id="effEndDate"
+										class="datepicker" />
+								</div>
+							</div>
+						</div>
+
+						<div id="third" class="container">
+							<div id="third-one" class="row">
+								<div class="col-sm-4"></div>
+
+								<div class="col-sm-3">
+								
+								
+									<input type="submit" value="Submit"
+										class="btn btn-primary cus-button" />
+								</div>
+								<div class="col-sm-4"></div>
+							</div>
+						</div>
+						<div class="hidden">
+							<input type="text" th:field="*{datestamp}" id="datestamp"
+								value="" />
+							<input type="text" th:field="*{status}" id="status"
+								value="" />
+						</div>
+						<script>
+							document.getElementById("datestamp").value = Date();
+							document.getElementById("status").value = 'pending';
+						</script>
+					</form>
+				</div>
+
+			 </div>
+			
+		<!--</div> -->
+	<!-- </div> -->
+	<div class="custom-container"><br></br></div>
+	
+  <div class="navbar navbar-inverse navbar-fixed-bottom"> 
+<!--  <div class="footer"> -->
+<p class="footer-block">
+  <img src="https://scsanalytics.com/wp-content/uploads/2017/02/250ElevatingSCSAnalytics.png"></img>
+       </p>	
+     	
+    </div> 
+</body>
+</html>

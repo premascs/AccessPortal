@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Admin Page</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />   
+
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+   
+
+  <link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"></link>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}" />
+<script th:src="@{/js/admin.js}"></script>
+	
+	
+ <link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+ <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> 
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+	
+	
+	<script>
+	
+	
+	
+	function searchview(){
+	/* alert("OK"); */
+	var id = document.getElementById("searchappid");
+	var appname = document.getElementById("appname");
+	var applname = document.getElementById("applname");
+	var appemail = document.getElementById("appemail");
+	var type = document.getElementById("appType");
+	var isNumeric=id.value.match(/^\d+$/);
+	if(!id.value){
+		alert("Please enter id to search");
+	}
+	
+	else if (!isNumeric){
+			alert("Please enter valid id to search");
+			window.location.href=window.location.href;
+		}
+	else{
+	 $.ajax({
+	        type: "POST",
+	        contentType: "application/json",
+	        url: "/searchview/"+id.value,
+	        data: JSON.stringify(id),
+	        dataType: 'json',
+	        cache: false,
+	        timeout: 600000,
+	        success: function (data) {
+	        	
+				//alert(JSON.parse(data));
+				
+	            var json = "<h4>Ajax Response</h4><pre>"
+	                + JSON.stringify(data, null, 4) + "</pre>";
+	            $('#feedback').html(json);
+	            if(data=="No"){
+	            	alert("Please enter a valid id");
+	            }else{
+				for (var i in data){
+				appname.value=data[i].name;
+				applname.value=data[i].lastName;
+				appemail.value=data[i].email;
+				type.value=i;
+	        }}
+	            console.log("SUCCESS : ", data);
+	            $("#btn-search").prop("disabled", false);
+
+	        },
+	        error: function (e) {
+	        	alert("Please enter a valid id");
+	        	window.location.href=window.location.href;
+	            var json = "<h4>Ajax Response</h4><pre>"
+	                + e.responseText + "</pre>";
+	            $('#feedback').html(json);
+
+	            console.log("ERROR : ", e);
+	            $("#btn-search").prop("disabled", false);
+
+	        }
+	    });
+	}
+	
+	}
+	
+	
+	function updateview(id){
+		
+		/* var id = document.getElementById("updateappid"); */
+		var uappname = document.getElementById("uappname");
+		var uapplname = document.getElementById("uapplname");
+		var uappemail = document.getElementById("uappemail");
+		var utype = document.getElementById("accessT");
+		var eLink = document.getElementById("eLink");
+		/*var isNumeric=id.value.match(/^\d+$/);
+		 if(!id.value){
+			alert("Please enter id to search");
+		}
+		
+		else  if (!isNumeric){
+				alert("Please enter valid id to search");
+				window.location.href=window.location.href;
+			}
+		else{*/
+			
+		
+		uappname.removeAttribute("disabled"); 
+		uapplname.removeAttribute("disabled"); 
+		uappemail.removeAttribute("disabled"); 
+		utype.removeAttribute("disabled"); 
+		 $.ajax({
+		        type: "POST",
+		        contentType: "application/json",
+		        url: "/updateview/"+id,
+		        data: JSON.stringify(id),
+		        dataType: 'json',
+		        cache: false,
+		        timeout: 600000,
+		        success: function (data) {
+					/* alert(data) */
+					
+					eLink.click();
+		            var json = "<h4>Ajax Response</h4><pre>"
+		                + JSON.stringify(data, null, 4) + "</pre>";
+		            $('#feedback').html(json);
+					for (var i in data){
+					
+					uappname.value=data[i].name;
+					uapplname.value=data[i].lastName;
+					uappemail.value=data[i].email;
+					var option = document.createElement("option");
+					option.text = i;
+					option.value = i;
+					utype.appendChild(option);
+					utype.value=i;
+					/* alert(i); */
+
+		        }
+		            console.log("SUCCESS : ", data);
+		            $("#btn-search").prop("disabled", false);
+
+		        },
+		        error: function (e) {
+		        	alert("Please enter a valid id");
+		        	window.location.href=window.location.href;
+		            var json = "<h4>Ajax Response</h4><pre>"
+		                + e.responseText + "</pre>";
+		            $('#feedback').html(json);
+
+		            console.log("ERROR : ", e);
+		            $("#btn-search").prop("disabled", false);
+
+		        }
+		    });
+		
+		}
+	
+	function deleteview(){
+		/* alert("OK"); */
+		var id = document.getElementById("deleteappid");
+		var dappname = document.getElementById("dappname");
+		var dapplname = document.getElementById("dapplname");
+		var dappemail = document.getElementById("dappemail");
+		var dtype = document.getElementById("dappType");
+		var isNumeric=id.value.match(/^\d+$/);
+		if(!id.value){
+			alert("Please enter id to search");
+		}
+		
+		else if (!isNumeric){
+				alert("Please enter valid id to search");
+				window.location.href=window.location.href;
+			}
+		else{
+		 $.ajax({
+		        type: "POST",
+		        contentType: "application/json",
+		        url: "/updateview/"+id.value,
+		        data: JSON.stringify(id),
+		        dataType: 'json',
+		        cache: false,
+		        timeout: 600000,
+		        success: function (data) {
+					/* alert(data)
+					 */
+		            var json = "<h4>Ajax Response</h4><pre>"
+		                + JSON.stringify(data, null, 4) + "</pre>";
+		            $('#feedback').html(json);
+					for (var i in data){
+					dappname.value=data[i].name;
+					dapplname.value=data[i].lastName;
+					dappemail.value=data[i].email;
+					dtype.value=i;
+					//alert("Deleted Successfully");
+		        }
+		            console.log("SUCCESS : ", data);
+		            $("#btn-search").prop("disabled", false);
+
+		        },
+		        error: function (e) {
+		        	alert("Please enter a valid id");
+		        	window.location.href=window.location.href;
+		            var json = "<h4>Ajax Response</h4><pre>"
+		                + e.responseText + "</pre>";
+		            $('#feedback').html(json);
+
+		            console.log("ERROR : ", e);
+		            $("#btn-search").prop("disabled", false);
+
+		        }
+		    });
+		}
+		}
+	
+	function deleteapprover(id){
+	/* 	alert("OK"); */
+		//var id = document.getElementById("deleteappid");
+		var dappname = document.getElementById("dappname");
+		var dapplname = document.getElementById("dapplname");
+		var dappemail = document.getElementById("dappemail");
+		var dtype = document.getElementById("dappType");
+		var vLink = document.getElementById("vLink");
+		var confirmation = confirm("Are you sure you want to delete approver #" +id+ " ?");
+		//var actionForm= document.getElementById('actionForm');
+		if(confirmation==true){
+			$.ajax({
+		        type: "POST",
+		        contentType: "application/json",
+		        url: "/deleteapprover/"+id,
+		        data: JSON.stringify(id),
+		        dataType: 'json',
+		        cache: false,
+		        timeout: 600000,
+		        success: function (data) {
+					/* alert(data) */
+					
+					
+					
+					alert("Deleted Successfully");
+					 window.location.href=window.location.href;
+					 //alert("success");
+					 vLink.click();
+		            var json = "<h4>Ajax Response</h4><pre>"
+		                + JSON.stringify(data, null, 4) + "</pre>";
+		            $('#feedback').html(json);
+					/*  for (var i in data){
+					dappname.value=data[i].name;
+					dapplname.value=data[i].lastName;
+					dappemail.value=data[i].email;
+					dtype.value=i; 
+		        } */
+		            console.log("SUCCESS : ", data);
+		            $("#btn-search").prop("disabled", false);
+
+		        },
+		        error: function (e) {
+		        	alert("Deleted Successfully");
+		        	window.location.href=window.location.href;
+		        	vLink.click();
+		            var json = "<h4>Ajax Response</h4><pre>"
+		                + e.responseText + "</pre>";
+		            $('#feedback').html(json);
+
+		            console.log("ERROR : ", e);
+		            $("#btn-search").prop("disabled", false);
+
+		        }
+		    });
+		}
+		 
+		}
+	function updateapprover(){
+		/* alert("Inside"); */
+		var id = parseInt(document.getElementById("updateappid").value);
+		var uappname = document.getElementById("uappname").value;
+		var uapplname = document.getElementById("uapplname").value;
+		var uappemail = document.getElementById("uappemail").value;
+		var utype = document.getElementById("accessT").value;
+		var approver = new Object();
+		var atype = new Object();
+		approver.id = id;
+		approver.name = uappname;
+		approver.lastName = uapplname;
+		approver.email = uappemail;
+		atype.approverId = id;
+		atype.type = utype;
+		//alert("/updateapprover/"+approver);
+		 $.ajax({
+			 type: "POST",
+		        contentType: "application/json",
+		        url: "/updateapprover",
+		        data: JSON.stringify(approver),
+		        dataType: 'json',
+		        cache: false,
+		        timeout: 600000,
+		        
+		        success: function (data) {
+					 alert("Updated Successfully!!"); 
+					 window.location.href=window.location.href;
+					 uappname.value="";
+		            var json = "<h4>Ajax Response</h4><pre>"
+		                + JSON.stringify(data, null, 4) + "</pre>";
+		            $('#feedback').html(json); 
+		           
+		            console.log("SUCCESS : ", data);
+		            $("#btn-search").prop("disabled", false);
+		            alert("Updated!!");
+					
+
+		        },
+		        error: function (e) {
+		            alert("Updated Successfully");
+		            window.location.href=window.location.href;
+		            var json = "<h4>Ajax Response</h4><pre>"
+		                + e.responseText + "</pre>";
+		            $('#feedback').html(json);
+
+		            console.log("ERROR : ", e);
+		            $("#btn-search").prop("disabled", false);
+
+		        }
+		    });
+		
+		 $.ajax({
+			 type: "POST",
+		        contentType: "application/json",
+		        url: "/updateaccesstype",
+		        data: JSON.stringify(atype),
+		        dataType: 'json',
+		        cache: false,
+		        timeout: 600000,
+		        
+		        success: function (data) {
+					/* alert(data); */
+					
+		            var json = "<h4>Ajax Response</h4><pre>"
+		                + JSON.stringify(data, null, 4) + "</pre>";
+		            $('#feedback').html(json); 
+		           
+		            console.log("SUCCESS : ", data);
+		            $("#btn-search").prop("disabled", false);
+		            /* alert("Updated!!"); */
+					
+
+		        },
+		        error: function (e) {
+
+		            var json = "<h4>Ajax Response</h4><pre>"
+		                + e.responseText + "</pre>";
+		            $('#feedback').html(json);
+
+		            console.log("ERROR : ", e);
+		            $("#btn-search").prop("disabled", false);
+
+		        }
+		    });
+		
+		
+		
+	} 
+	</script>
+</head>
+
+<body>
+
+
+<div class="navbar navbar-default  ">
+ <div class="container-fluid">
+  <div class="header-block"><a th:href="@{/login}"><img th:src="@{/images/small.png}"></img></a></div>	
+ <div class="navbar-header">
+
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+     
+    </div>
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+ <ul class="nav navbar-nav navbar-right">
+        
+        <li class="dropdown">
+        <ul class="nav navbar-nav navbar-right">
+        <li><a class="navbar-text" style="color: #2D39DD;font-size: 15px;
+	font-weight: bold; padding-right: 20px;" th:href="@{/logout}">Logout</a></li>
+        </ul>
+         
+        </li>
+      </ul>
+     	</div>
+    </div> 
+  
+    </div>
+	
+<div th:switch="${role}"> 
+<div th:case="'2'">
+<!-- Approver -->
+<div class="container ">
+	<div class="row">
+	
+        <div class="col-lg-12 col-md-10 col-sm-9 col-xs-10 welcome-tab-container">
+	<!-- 	<div class="logout"> <a th:href="@{/logout}"> Logout</a></div>
+		<br></br>
+		<br></br> -->
+		
+		<div class="adminMsg"> <span th:utext="${userName}"></span></div>
+		</div>
+		</div>
+</div>
+
+		<div class="container  ">
+		<div class="row">
+		<div class="panel panel-default cus-default">
+  <div class="panel-body">
+    <form name="actionForm" id="actionForm" autocomplete="off"  method="get" role="form">
+  <div class="table-responsive">          
+  <table class="table table-hover ">
+    <thead>
+      <tr>
+        <th>Request ID</th>
+        <th>Access Type</th>
+        <th>User ID</th>
+        <th>Original Approver</th>
+        <th>Change Type</th> 
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>TimeStamp</th>
+        <th>Request</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+ <tbody th:each="areq : ${aReq}" >
+
+<!-- <c:forEach items="${accessList}" var="user"> -->
+      <tr>
+<td class="col-md-1" id="reqId" th:text="(${areq.id==null})? '' : ${areq.id}"></td>
+<td class="col-sm-2" th:text="(${areq.accessType==null})? '' : ${areq.accessType}"></td>
+<td class="col-md-1" th:text="(${areq.userId==null})? '': ${areq.userId}"></td>
+<td class="col-md-1" th:text="(${areq.orgApprover==null})? '': ${areq.orgApprover}"></td>
+<td class="col-md-1" th:text="(${areq.temporary==null})? 'permanent' : ${areq.temporary}"></td>
+<td class="col-md-1" th:text="(${areq.effStartDate==null})? '' : ${areq.effStartDate}"></td>
+<td class="col-md-1" th:text="(${areq.effEndDate==null})? '' : ${areq.effEndDate}"></td>
+<td class="col-md-1" th:text="(${areq.datestamp==null})? '' : ${areq.datestamp }"></td>
+<td class="col-md-1" th:text="(${areq.accessReqAction==null})? '' : ${areq.accessReqAction}"></td>
+     
+      <td>
+      <button id="approvebutton" type="button" class="btn btn-success" th:attr="onclick='approve(\'' + ${areq.id}+ '\');'">Approve</button>
+      <button id="declinebutton" type="button" class="btn btn-danger" th:attr="onclick='decline(\'' + ${areq.id}+ '\');'">Decline</button></td>
+      
+      </tr>    
+       
+      </tbody> 
+      </table>
+      
+      </div>
+      </form> 
+      </div>		</div>	</div></div>	
+						</div>
+					
+<!-- ADMIN -->
+<div th:case="'1'">
+
+<div class="container">
+	<div class="row">
+        <div class="col-lg-12 col-md-10 col-sm-9 col-xs-10 welcome-tab-container">
+	<!-- 	<div class="logout"> <a th:href="@{/logout}"> Logout</a></div>
+		<br></br>
+		<br></br>
+		 -->
+		<div class="adminMsg"> <span th:utext="${userName}"></span></div>
+		</div>
+		</div>
+</div>
+<div class="container">
+	<div class="row">
+	<div class="panel cust-default " style="border:none;">
+        <div class="col-lg-12 col-md-10 col-sm-9 col-xs-10 tab-container">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 tab-menu">
+              <div class="list-group">
+                <a href="#" class="list-group-item active text-center">
+                  <h4 class="glyphicon glyphicon-plus"></h4><br/>Add Approver
+                </a>
+                <a href="#" class="list-group-item text-center" id="vLink">
+                  <h4 class="glyphicon glyphicon-user"></h4><br/>View Approver
+                </a>
+                <a href="#" class="list-group-item text-center" id="eLink">
+                  <h4 class="glyphicon glyphicon-pencil"></h4><br/>Edit Approver
+                </a>
+               <!--  <a href="#" class="list-group-item text-center">
+                  <h4 class="glyphicon glyphicon-remove"></h4><br/>Remove Approver
+                </a> -->
+               
+              </div>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 custom-right-tab">
+                <!-- Add Approver -->
+                <div class="custom-tab-content active">
+                   
+					<!--Add Approver  -->
+       
+		 <div class="col-sm-12" id="content-right">
+		<div class="row">
+		
+			<div class="col-md-6 col-md-offset-1">
+				<form autocomplete="off" name="addapprover" action=""
+					th:object="${approverModel}" method="post" class="form-horizontal"
+					role="form" id="homeForm">
+					
+					<div class="form-group">
+						<div class="col-sm-11">
+							 <label class="validation-message">First Name</label> 
+						<!-- 	<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+								class="validation-message"></label> -->
+							 <input type="text"
+								th:field="*{name}" id="addname" name="name" placeholder="First Name" class="form-control" />
+						</div>
+						
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-11">
+							 <label  class="validation-message"> Last Name</label>  
+							<!-- <label th:if="${#fields.hasErrors('lastName')}"
+								th:errors="*{lastName}" class="validation-message"></label> -->
+							<input type="text" id="addlname" name="lastname" th:field="*{lastName}" placeholder="Last Name"
+								class="form-control" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-11">
+						 <label  class="validation-message"> Email</label> 
+					<!-- 	<label
+								th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+								class="validation-message"></label> -->
+							<input type="text" id="addemail" name="email"  th:field="*{email}" placeholder="Email"
+								class="form-control" /> 
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-11">
+						<label  class="validation-message"> Access Type</label>
+							<select  class="form-control"
+										id="accessType">
+										<option th:each="type : ${typeList}" th:value="${type}"
+											th:text="${type}"></option>
+									</select>
+									 <label		
+								class="validation-message"></label>
+						</div>
+					</div>
+<p th:utext="${successMessage}"></p>
+					<div class="form-group ">
+						<div class="col-sm-11">
+							<button type="button" class="btn btn-primary btn-block" onclick="home()">Add Approver
+								</button>
+						</div>
+					</div>
+	
+					
+
+
+				</form>
+				
+			</div>
+			<br></br>
+			<!-- <div class="col-sm-4">
+			 <div id="messages"></div>
+						<p>please enter valid email</p>
+						</div> -->
+		</div>
+		</div>
+                    
+                 
+                </div>
+                
+                
+                <!-- View Approver-->
+       <div class="custom-tab-content">          
+                           
+		 <div class="col-sm-13  panel panel-default custom-panel-right" >
+        <table class="table table-fixed" th:object="${appList}">
+          <thead>
+            <tr>
+              <th class="col-xs-1">#</th>
+              <th class="col-xs-2">First Name</th>
+              <th class="col-xs-2">Last Name</th>
+              <th class="col-xs-2">Access Type</th>
+              <th class="col-xs-4">Email</th>
+              <th class="col-xs-1">Action</th>
+              
+            </tr>
+           </thead>
+          <tbody> 
+          
+            <tr th:each="appList : ${appList}" >
+              <td  class="col-xs-1"><a data-toggle="tooltip" title="Edit" th:href="'javascript:updateview(\''+ ${appList.value.id} +'\');'" th:text="${appList.value.id}" id ="aLink"></a></td>
+              <td  th:text="${appList.value.name}" class="col-xs-2"></td>
+              <td th:text="${appList.value.lastName}" class="col-xs-2"></td>
+              <td th:text="${appList.key}" class="col-xs-2"></td>
+              <td th:text="${appList.value.email}" class="col-xs-4"></td>
+              <td class="col-xs-1"><button type="button" class="glyphicon glyphicon-trash blue"  title="Delete" th:onclick="'javascript:deleteapprover(\''+ ${appList.value.id} +'\');'"></button></td>
+            </tr>
+               
+           
+         </tbody>
+        </table>
+		</div>
+                    
+                </div>
+    
+                <!-- Edit Approver -->
+                <div class="custom-tab-content">
+                                       
+		 <div class="col-sm-9" id="content-rigt">
+		<div class="row">
+		<div class="col-md-8 col-md-offset-1">				
+				<form name="view" action="#" th:action="@{/updateview}"
+					 class="form-horizontal"
+					role="form">
+				
+				<!-- 	<div class="form-group">
+					
+						<div class="col-sm-6">
+							 
+							<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+								class="validation-message"></label>
+							 <input type="text" id="updateappid" name="updateappid"
+								 placeholder="Enter ID" class="form-control" />
+								 
+						</div>
+						<div class="col-sm-5">
+						 
+							<button type="button" id="searchid" class="btn btn-primary btn-block" onclick="updateview()">Search
+								</button>
+						</div>
+					
+					</div> -->
+					
+ 
+
+					<div class="form-group">
+						<div class="col-sm-11">
+							 <label class="validation-message">First Name</label> 
+						<!-- 	<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+								class="validation-message"></label> -->
+							 <input type="text" id="uappname"
+								 placeholder="First Name" class="form-control" disabled="disabled" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-11">
+							 <label  class="validation-message"> Last Name</label>  
+							<!-- <label th:if="${#fields.hasErrors('lastName')}"
+								th:errors="*{lastName}" class="validation-message"></label> -->
+							<input type="text" id="uapplname" placeholder="Last Name"
+								class="form-control" disabled="disabled"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-11">
+						 <label  class="validation-message"> Email</label> 
+				
+							<input type="text" id="uappemail" placeholder="Email"
+								class="form-control" disabled="disabled" /> 
+						</div>
+						
+						</div>
+						
+						<div class="form-group">
+						<div class="col-sm-11">
+						 <label  class="validation-message"> Access Type</label> 
+				
+								<select class="form-control"
+										id="accessT" disabled="disabled" >
+										<option th:each="type : ${typeList}" th:value="${type}"
+											th:text="${type}"></option>
+									</select>
+						</div>
+						</div>
+						<div class="form-group">
+						<div class="col-sm-11">
+						<label class="validation-message"></label> 
+							<button type="button" class="btn btn-primary btn-block" onclick="updateapprover()">Save
+								</button>
+						</div>
+						</div>
+						
+						
+		
+
+					
+	<p th:utext="${successMessage}"></p>
+					
+
+
+				</form>
+				
+			</div>
+		</div>
+		</div>
+                     
+                </div>
+                
+                
+                <!-- Delete Approver -->
+                <div class="custom-tab-content">
+                    <div class="col-sm-9" id="content-rigt">
+		<div class="row">
+		<div class="col-md-8 col-md-offset-1">			
+				<form name="view" action="#" 
+					 class="form-horizontal"
+					role="form">
+				
+					<div class="form-group">
+					
+						<div class="col-sm-6">
+		
+				
+							 <input type="text" id="deleteappid" name="deleteappid"
+								 placeholder="Enter ID" class="form-control" />
+								 
+						</div>
+						<div class="col-sm-5">
+						
+							<button type="button" class="btn btn-primary btn-block" onclick="deleteview()">Search
+								</button>
+						</div>
+					
+					</div>
+				
+					<div class="form-group">
+						<div class="col-sm-11">
+							 <label class="validation-message">First Name</label> 
+						<!-- 	<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+								class="validation-message"></label> -->
+							 <input type="text" id="dappname"
+								 placeholder="First Name" class="form-control" disabled="disabled" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-11">
+							 <label  class="validation-message"> Last Name</label>  
+							<!-- <label th:if="${#fields.hasErrors('lastName')}"
+								th:errors="*{lastName}" class="validation-message"></label> -->
+							<input type="text" id="dapplname" placeholder="Last Name"
+								class="form-control" disabled="disabled" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-11">
+						 <label  class="validation-message"> Email</label> 
+					<!-- 	<label
+								th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+								class="validation-message"></label> -->
+							<input type="text" id="dappemail" placeholder="Email"
+								class="form-control" disabled="disabled"/> 
+						</div>
+						
+						</div>
+						
+						<div class="form-group">
+						<div class="col-sm-11">
+						 <label  class="validation-message"> Access Type</label> 
+					<!-- 	<label
+								th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+								class="validation-message"></label> -->
+							<input type="text" id="dappType" placeholder="Access Type"
+								class="form-control" disabled="disabled"/> 
+						</div>
+						</div>
+						<div class="form-group">
+						<div class="col-sm-11">
+						<label class="validation-message"></label> 
+							<button type="button" class="btn btn-primary btn-block" onclick="deleteapprover()">Delete
+								</button>
+						</div>
+						</div>
+						
+						
+		
+
+					
+	<p th:utext="${successMessage}"></p>
+					
+
+
+				</form>
+				
+			</div>
+		</div>
+		</div>
+                   
+                </div>
+                
+            </div>
+        </div>
+  </div>
+  </div>
+</div>
+<div class="custom-container">
+<div class="row">
+<div class= "col-sm-6"></div>
+<div class= "col-sm-6">
+<p style="font-color:blue;">
+			              Copyright 2017 SCS Analytics | All Rights Reserved 	</p>
+			              </div>
+</div>
+</div>
+</div>
+</div>
+  <div class="navbar navbar-inverse navbar-fixed-bottom"> 
+<!--  <div class="footer"> -->
+<p class="footer-block">
+  <img src="https://scsanalytics.com/wp-content/uploads/2017/02/250ElevatingSCSAnalytics.png"></img>
+       </p>	
+     	
+    </div> 
+</body>
+</html>
